@@ -1,0 +1,257 @@
+{% extends "base.html" %}
+{% block title %} Do not disturb {% endblock title%}
+{% block content %}
+{% load product_filters %}
+{% load static %}
+<script type="text/javascript" src='{% static "js/form.js" %}'></script>
+<script type="text/javascript" src='{% static "js/moment.js" %}'></script>
+<script type="text/javascript" src='{% static "js/daterangepicker.js" %}'></script>
+<link rel="stylesheet" type="text/css" href='static/css/daterangepicker.css'>
+        <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    {% if messages %}
+
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+                {% if request.user.is_superuser %}
+                <p>Want to get in touch with me? Fill out the form below to send me a message and I will try to get back to you within 24 hours!</p>
+                <!-- Contact Form - Enter your email address on line 19 of the mail/contact_me.php file to make this form work. -->
+                <!-- WARNING: Some web hosts do not allow emails to be sent through forms to common mail hosts like Gmail or Yahoo. It's recommended that you use a private domain email address! -->
+                <!-- NOTE: To use the contact form, your site must be on a live web host with PHP! The form will not work locally! -->
+                <form method="post">
+                    <div class="row control-group">
+                        <div class="form-group col-xs-12  form-group controls">
+                            <label>Product name</label>
+                            <input type="text" name="name" class="form-control" placeholder="Name">
+                             {{ form.errors.name }}
+                        </div>
+                    </div>
+                    {% csrf_token %}
+                    <div class="row control-group">
+                        <div class="form-group col-xs-12 form-group controls">
+                            <label>Product description</label>
+                            <textarea rows="5" class="form-control" placeholder="Description" name="description"></textarea>
+                             {{ form.errors.description }}
+                        </div>
+                    </div>
+                    <div id="success"></div>
+                    <div class="row">
+                        <div class="form-group col-xs-12">
+                            <button type="submit" class="btn btn-default">Save</button>
+                        </div>
+                    </div>
+                </form>
+                {% endif %}
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <form class="form-horizontal" id="searchFrm">
+
+<!-- Form Name -->
+
+   <div class="row control-group">
+                        <div class="form-group col-xs-4" style="margin-right:0px;">
+                            <label>Device Name</label>
+                            <input id="product_name" type="text" placeholder="Search by product name" class="form-control input-md">
+                            
+                        </div>
+                     
+                           <div class="form-group col-xs-4" style="margin-right:0px;">
+                            <label>Owner</label>
+                            <select id="product_owner" class="form-control">
+                              <option value="" selected>Search by owner</option>
+                              {% for owner in owner_list %}
+                              <option value="{{ owner.id }}">{{ owner.username }}</option>
+                              {% endfor %}
+                             </select>
+                            
+                        </div>
+
+                        <div class="form-group col-xs-4">
+                            <label>Date</label>
+                            <input id="ownership_date" type="text" placeholder="Search by ownership date" class="form-control input-md">
+                            
+                        </div>
+
+                        
+   </div>
+   {% csrf_token %}
+   
+   <div class="row">
+  
+                        <div class="form-group col-xs-12">
+                            <button id="searchBtn" style="padding: 9px 11px" type="button" class="btn btn-primary"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;Search</button>
+                            <button id="resetBtn" style="padding: 9px 11px" type="button" class="btn btn-primary"><i class="fa fa-refresh" aria-hidden="true"></i>&nbsp;Reset</button>
+                        </div>
+</div>
+
+      </form>
+
+
+        </div></div>   <hr>
+        <div class="row" id="table_div">
+       
+
+        </div>
+    </div>
+ 
+  <form action="{% url 'request_to_ownership' %}" method="post" id="changeRequestFrm" hidden="">
+  <input type="hidden" name="category_id">
+  <input type="hidden" name="owner_id">
+  {% csrf_token %}
+  </form>
+
+
+  <form action="{% url 'ownership' %}" method="post" id="sendRequestFrm" hidden="">
+  <input type="hidden" name="category_id">
+  <input type="hidden" name="owner_id">
+  {% csrf_token %}
+  </form>
+  <hr>
+  <script type="text/javascript">
+  $(document).ready(function(){
+
+  gettable(1)
+  $('#ownership_date').daterangepicker({
+     autoUpdateInput: false,
+      locale: {
+          cancelLabel: 'Clear',
+      },
+      applyClass:'btn-primary'
+  });
+
+  $('#ownership_date').on('apply.daterangepicker', function(ev, picker) {
+      $(this).val(picker.startDate.format('YYYY-MM-DD') + ' / ' + picker.endDate.format('YYYY-MM-DD'));
+  });
+
+  $('#ownership_date').on('cancel.daterangepicker', function(ev, picker) {
+      $(this).val('');
+  });
+
+  // setInterval(function() {
+  //   page_number = $('ul.pagination').find('li.active').text();
+  //   gettable(page_number)
+  // },5000)  
+
+
+  $('#table_div').on('click','.change_request',function(){
+    var category_id = $(this).attr('data-category');
+    var owner_id = $(this).attr('data-owner');
+     bootbox.confirm({
+      message:"Do you want to send request for ownership",
+      buttons: {
+          confirm: {
+              label: 'OK',
+              className: 'btn btn-default'
+          },
+          cancel: {
+              label: 'Cancel',
+              className: 'btn btn-default'
+          }
+      },
+      callback: function (result) {
+          if(result){ 
+          $("#changeRequestFrm").find($("[name='category_id']")).val(category_id);
+          $("#changeRequestFrm").find($("[name='owner_id']")).val(owner_id);
+          $("#changeRequestFrm").submit();
+          }
+      }
+    });  
+})
+  
+  $('#table_div').on('click','.send_request',function(){
+  var owner_id = $(this).attr('data-owner');
+  var category_id = $(this).attr('data-category');
+  if(owner_id!=''){
+  var messages = "Do you want to release ownership of this product";
+  }else{
+  var messages = "Do you want to get ownership of this product";  
+  }
+  bootbox.confirm({
+    message:messages,
+    buttons: {
+        confirm: {
+            label: 'OK',
+            className: 'btn btn-default'
+        },
+        cancel: {
+            label: 'Cancel',
+            className: 'btn btn-default'
+        }
+    },
+    callback: function (result) {
+         if(result){ 
+         $("#sendRequestFrm").find($("[name='category_id']")).val(category_id);
+         $("#sendRequestFrm").find($("[name='owner_id']")).val(owner_id);
+         $("#sendRequestFrm").submit();
+         }
+    }
+});
+  })
+
+  $('#sendRequestFrm').ajaxForm({
+      success: function(response) {
+       page_number = $('ul.pagination').find('li.active').text();
+       gettable(page_number);
+      }
+  });
+
+  $('#changeRequestFrm').ajaxForm({
+      success: function(response) {
+       page_number = $('ul.pagination').find('li.active').text();
+       gettable(page_number);
+      }
+  });
+
+  $("#searchFrm").on('click','#searchBtn',function(){
+    var product_name = $("#searchFrm").find('#product_name').val();
+    var ownership_date = $("#searchFrm").find('#ownership_date').val(); 
+    var product_owner = $("#searchFrm").find('#product_owner').val();
+    gettable(1)
+  });
+
+
+  $("#searchFrm").on('click','#resetBtn',function(){
+    $("#searchFrm input[type=text]").val('');
+    $("#product_owner").val('');
+     gettable(1)
+  });
+  
+
+  $("#table_div").on('click','.pagination_link',function(){
+    page_number = $(this).attr('data-page-no');
+    gettable(page_number);
+  
+  });
+
+})
+
+function gettable(page_number,product_name=null,ownership_date=null,product_owner=null){
+  var product_name = $("#searchFrm").find('#product_name').val();
+  var ownership_date = $("#searchFrm").find('#ownership_date').val(); 
+  var product_owner = $("#searchFrm").find('#product_owner').val();
+
+  $.ajax({
+      url: "get-table",
+      method:"GET",
+      data:{'page':page_number,'product_name':product_name,'ownership_date':ownership_date,'product_owner':product_owner},
+      success: function(response)
+      {
+       $('#table_div').empty(''); 
+       $('#table_div').append(response);
+      }
+  });
+}
+
+
+
+</script>   
+{% endblock content%}

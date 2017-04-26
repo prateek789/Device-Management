@@ -1,0 +1,284 @@
+  <body>
+      {% load static %}
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    Menu <i class="fa fa-bars"></i>
+                </button>
+                <h2 class="navbar-brand brand-name {% if user.is_authenticated %}login_header{% endif %}">
+                <a href="/"><img style="height:60px;" class="img-responsive2"       
+                src="{% static '/img/device-management.png'%}">Device Management</a>
+                </h2>
+                
+            </div>
+
+          
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                   <!--  <li>
+                        <a href="/">Home</a>
+                    </li> -->
+                    <!-- <li>
+                        <a href="/about-us">About</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact</a>
+                    </li> -->
+                    <!-- {% if not user.is_authenticated%}
+                     <li>
+                        <a href="/login">Sign in</a>
+                    </li> -->
+                    <!--  <li>
+                        <a href="/registration">Sign up</a>
+                    </li> -->
+
+                     <!-- {% else %} -->
+                   <!--  <li>
+                        <a href="/product">Product</a>
+                    </li> -->
+                    <li class="dropdown noty">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                        <i class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i>
+                        <span class="badge"></span>
+                    <ul class="dropdown-menu dropdown-alerts">
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <i class="fa fa-comment fa-fw"></i> New Comment
+                                    <span class="pull-right text-muted small">4 minutes ago</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <i class="fa fa-twitter fa-fw"></i> 3 New Followers
+                                    <span class="pull-right text-muted small">12 minutes ago</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <i class="fa fa-envelope fa-fw"></i> Message Sent
+                                    <span class="pull-right text-muted small">4 minutes ago</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <i class="fa fa-tasks fa-fw"></i> New Task
+                                    <span class="pull-right text-muted small">4 minutes ago</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <i class="fa fa-upload fa-fw"></i> Server Rebooted
+                                    <span class="pull-right text-muted small">4 minutes ago</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a class="text-center" href="#">
+                                <strong>See All Alerts</strong>
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-alerts -->
+                </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Welcome  {{user}} <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                          <!-- <li><a href="/add_blog">Add Blog</a></li>
+                          <li><a href="#">Profile</a></li> -->
+                          <li><a href="/logout"><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
+                        </ul>
+                    </li>
+                     {% endif %}
+                    
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+   {% if '/login' not in request.path and '/recover' not in request.path%} 
+    <header class="intro-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="site-heading">
+                        <h1>Device Management</h1>
+                        <hr class="small">
+                        <span class="subheading">Help your IT administrators monitor, manage, and secure mobile devices</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+   {% endif %} 
+   <!-- <button id="doIt">Send notification</button> -->
+   <style type="text/css">
+
+.intro-header{
+      background:linear-gradient(rgba(3,93,145,0.7),rgba(0, 0, 0, 0.74)),url({% static '/img/home-bg.jpg'%})
+    }
+
+   .navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
+    color: #555;
+    background-color: transparent;   
+    } 
+   .noty .dropdown-menu{
+       background-color: rgba(0, 0, 0, 0.58) !important; 
+   }
+
+   .dropdown .dropdown-menu{
+       background-color: transparent; 
+       padding:0px 2px 0px 0px
+   }
+   .dropdown .open .dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus{
+    color: #0085A1
+   }
+
+   .navbar > .container .navbar-brand, .navbar > .container-fluid .navbar-brand{
+    margin-top: -21px;
+   }
+
+
+   .badge{
+    background: #255672;
+    width: auto;
+    height: auto;
+    margin: 0;
+    border-radius: 100%;
+    position: absolute;
+    top: 9px;
+    right: 24px;
+    padding: 2px 4px 3px 5px;
+    font-size: 10px;
+   }
+  
+   </style>
+   <script type="text/javascript">
+    $(document).ready(function(){
+     {% if user.is_authenticated %}
+    getNotification();
+    // getDesktopNotification();
+    
+     {% endif %}
+  
+
+    $(document).on('click','.notify',function(){
+      var noty_id = $(this).attr('data-id');
+      var url = $(this).attr('data-href');
+      $.ajax({
+      url: "{% url 'read-notification' %}", 
+      data:{noty_id:noty_id },
+      success: function(result)
+      {
+    //     // window.location.href = url;
+      }
+    });
+  });
+    });
+
+    function getNotification(){
+        $(".dropdown-alerts").load("{% url 'get-notification' %}", function(result){
+        if(result){
+        var count = $('.dropdown-alerts').find('#count_noty').val();
+        if(count>0){
+        $('title').html('('+count+') Do not disturb');  
+        $('.badge').text(count);
+        $('.badge').css('display','block');
+        }else{
+         $('title').html('Do not disturb');    
+        $('.badge').css('display','none');  
+        }
+        setTimeout('getNotification()', 5000);   
+        }
+    });
+ }
+
+
+  // function getDesktopNotification(){
+  //     $.ajax({
+  //     url: "{% url 'desktop-notification' %}",
+  //     success: function(response)
+  //     {
+  //       if(response.success=='true'){
+  //        msg = response.notification_data.message
+  //        subject = response.notification_data.subject
+  //        notify(msg,subject);
+  //      }
+  //     }
+  //   });
+  // };
+
+  // function notify(msg,subject){
+  //   if(Push.Permission.has()){
+  //   Push.create(subject,{
+  //   body: msg,
+  //   icon:'/static/img/device-management.png',
+  //   timeout: 4000,
+  //   onClick: function () {
+  //       window.focus();
+  //       this.close();
+  //   }
+  // });
+  // }
+  // }
+
+
+</script>
+ <!--   <script>
+var endpoint;
+var key;
+var authSecret;
+
+// Register a Service Worker.
+navigator.serviceWorker.register('static/js/service-worker.js')
+  .then(function(registration) {
+return navigator.serviceWorker.ready.then(function(serviceWorkerRegistration) {
+      return serviceWorkerRegistration.pushManager.getSubscription()
+        .then(function(subscription) {
+          if (subscription) {
+            return subscription;
+          }
+          return serviceWorkerRegistration.pushManager.subscribe({
+            userVisibleOnly: true
+          });
+        });
+
+    });
+
+  })
+
+document.getElementById('doIt').addEventListener('click', function() {
+  fetch("{% url 'desktop-notification' %}", {
+    headers: {
+      'Content-type': 'application/json'
+    },
+    success: function(result)
+      {
+          console.log("SAD");
+      }
+  });
+});
+   </script> -->

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block title %}Home {% endblock title %} | Device Management</title>
+            {% load static %}
+             
+            <!-- Default CSS  -->
+            <link href='{% static "bootstrap/css/bootstrap.css" %}'
+                      rel="stylesheet" media="screen">
+             <link href='{% static "css/clean-blog.css" %}'
+                      rel="stylesheet" media="screen">
+            <link href='{% static "font-awesome/css/font-awesome.css" %}' rel="stylesheet" type="text/css">
+    
+            <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+            <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>          
+
+            <!-- Dynamic CSS  -->
+            {% block head_css_site %}
+            {% endblock head_css_site %}
+
+
+
+            <!-- Default JS -->
+                 <script type="text/javascript" src='{% static "js/jquery.js" %}'></script>
+                <script type="text/javascript" src='{% static "bootstrap/js/bootstrap.js" %}'></script>
+                 <script type="text/javascript" src='{% static "js/clean-blog.js" %}'></script>
+                 <script type="text/javascript" src='{% static "js/push.js" %}'></script>
+                  <script type="text/javascript" src='{% static "js/bootbox.min.js" %}'></script>
+                 
+            <!-- Dynamic JS -->
+
+            {% block head_js_site %}
+            {% endblock head_js_site %}
+    
+
+    </head>
+   
+    <body>
+    {% include "header.html" %}
+    {% block content %}{% endblock content %}	
+    </body>
+    {% include "footer.html" %}
+ </html>

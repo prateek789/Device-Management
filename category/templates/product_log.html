@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %} Product Log {% endblock title%}
+{% block content %}
+{% load product_filters %}
+{% load static %}
+        <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <h3>{{ product_detail.name }} <a href="/" type="button" class="btn btn-sm btn-default pull-right">Back</a></h3>
+            <p>{{ product_detail.description }}</p>
+            
+            
+            <hr> </div>
+        </div>
+        <div class="row">
+         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+         <table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Current Owner</th>
+      <th>Previous Owner</th>
+      <th>OwnerShip Date</th>
+      <th>Duration</th>
+    </tr>
+  </thead>
+  <tbody>
+   {% if logs %}
+   {% for log in logs %}
+  <tr class="{% if log.active %}current{% endif %}"> 
+  <td>{{ log.user|capfirst }}</td>
+  <td>{{ log.past_user|capfirst }}</td>
+  <td>{{ log.create_date|convertTimeZone}}</td>
+  <td>
+   {{ log.current_date|duration_date_string:log.past_date }}
+   
+  </td>
+  </tr>
+  {% endfor %}
+  {% else %}
+   <td colspan="5" style="text-align: center;">No result found</td> 
+  {% endif %}
+  </tbody>
+</table>
+  {% if logs.has_other_pages %}
+  <ul class="pagination" style="margin-left:37%;">
+    {% if logs.has_previous %}
+      <li><a href="?page={{ logs.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in logs.paginator.page_range %}
+      {% if logs.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if logs.has_next %}
+      <li><a href="?page={{ logs.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
+	</div>
+
+        </div>
+    </div>
+ <hr>
+
+{% endblock content%}

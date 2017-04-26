@@ -1,0 +1,19 @@
+ {% load app_filters %}
+{% if notification_list %}
+{% for noty in notification_list %}
+<li>
+{% if noty.module_name == 'Category' %}
+<a class="notify" href="javascript:void(0)" data-href="/change-ownership/{{noty.module_id}}" titile="Change ownership" data-id="{{noty.id}}">
+{% endif %}
+{% if noty.module_name == 'Blog' %}
+<a class="noty" href="javascript:void(0)" data-href="/blog-detail/{{noty.id}}" titile="Blog detail" data-id="{{noty.id}}">
+{% endif %}
+<div><i class="fa fa-comment fa-fw"></i>{{ noty.message }} <span class="pull-right text-muted small" >{{ noty.create_date|get_due_date_string }}</span>
+</div>
+</a>
+</li>
+{% endfor %}
+{% else %}
+<li><a>No notification found</a></li>
+{% endif %}
+<input type="hidden" id="count_noty" value="{{ notification_list.count }}"> 

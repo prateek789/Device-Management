@@ -1,0 +1,88 @@
+ {% load product_filters %}
+         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 prehtml">
+         <table class="table table-striped" id="product_table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Ownership date</th>
+      <th>Owner</th>
+      <th>Requested owner</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% if categories %}
+    {% for category in categories %}
+    <tr>
+      <td><a style="color:#337ab7" href="owner-details/{{category.id}}" title="{{ category.name }}">{{ category.name }}</a></td>
+      <td>{% if category.ownership_date %} {{ category.ownership_date|convertTimeZone }} {% else %} None {% endif %} </td>
+      <td>{% if category.owner == None %} Free {% else %} {{ category.owner|capfirst }} {% endif %}</td>
+
+      {% if category.id|check_make_request:request %}
+
+      {% with request_data=category.id|check_make_request:request %}
+      <td>{{ request_data|join:"," }}</td>
+      {% endwith %}
+      
+      {% else %}
+      <td>None</td>
+      {% endif %}
+      <td>
+      {% if request.user.is_superuser %}
+          <a href="edit_category/{{category.id}}" title="Edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>&nbsp;&nbsp;<a href="category_delete/{{category.id}}" title="Delete"><i class="fa fa-trash" aria-hidden="true"></i></a>
+      
+      {% else %}
+              {% if category.owner.id == user.id or category.owner is null %}
+                <a href="javascript:void(0)" class="send_request" data-category= "{{category.id}}" data-owner= "{{category.owner.id}}" title="{% if category.owner is null %} Get ownership {% else %} Release ownership  {% endif %}">
+                {% if category.owner is null %}
+                <i class="fa fa-toggle-off" aria-hidden="true"></i>
+                {% else %}  
+                <i class="fa fa-toggle-on" aria-hidden="true"></i>
+                {% endif %}
+                </a>
+                {% if category.id|change_owner_check:request %}
+                &nbsp;&nbsp;<a title="change owner" href="/change-ownership/{{category.id}}"><i class="fa fa-thumbs-up" aria-hidden="true"></i></a> 
+                {% endif %}
+              {% else %}
+                  {% if category.id|check_request_btn:request %}
+                  Request send
+                  {% else %}
+                  <a href="javascript:void(0)" class="change_request" data-category= "{{category.id}}" data-owner= "{{category.owner.id}}" title="Request to ownership"><i class="fa fa-paper-plane" aria-hidden="true"></i>
+                  </a>
+                  {% endif %}
+             
+
+              {% endif %}
+      {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+    {% else %}
+    <tr>
+     <td colspan="8" style="text-align: center;">No result found</td> 
+    </tr>
+    {% endif %}
+   </tbody>
+</table>
+ {% if categories.has_other_pages %}
+  <ul class="pagination" style="margin-left:37%;">
+    {% if categories.has_previous %}
+    <li><a class="pagination_link" href="javascript:void(0)" data-page-no="{{ categories.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in categories.paginator.page_range %}
+      {% if categories.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only"></span></span></li>
+      {% else %}
+      <li><a class="pagination_link" href="javascript:void(0)" data-page-no="{{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if categories.has_next %}
+      <li><a class="pagination_link" href="javascript:void(0)" data-page-no="{{ categories.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
+	</div>

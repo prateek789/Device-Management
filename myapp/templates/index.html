@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+  <div class="container">
+        <div class="row">
+       
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                  {% if messages %}
+
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+            {% if blog_list %}
+                {% for blogs in blog_list  %}
+                <div class="post-preview">
+                    <a href="blog-detail/{{blogs.id}}">
+                        <h2 class="post-title">
+                            {{ blogs.title }}
+                        </h2>
+                        <h3 class="post-subtitle">
+                            {{ blogs.description }}
+                        </h3>
+                    </a>
+                    <p class="post-meta">Posted by <a href="#">{{ blogs.created_by }}</a> on {{ blogs.publish_date }}</p>
+                </div>
+                  <hr>
+                {% endfor %}
+            {% else %}
+                <h4 style="text-align: center;">No blog found</h4>
+            {% endif %}        
+              
+                <!-- Pager -->
+            </div>
+        </div>
+    </div>
+
+    <hr>
+{% endblock %}
