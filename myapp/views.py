@@ -33,9 +33,6 @@ def device_error(request):
 def test_error(request):
     return render(request, '500.html', status=500)
 
-def admin3_error(request):
-    return render(request, '500.html', status=500)
-
 def admin1_error(request):
     return render(request, '500.html', status=500)
 
