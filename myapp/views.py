@@ -36,3 +36,8 @@ def test_error(request):
 def admin3_error(request):
     return render(request, '500.html', status=500)
 
+def admin1_error(request):
+    return render(request, '500.html', status=500)
+
+def admin2_error(request):
+    return render(request, '500.html', status=500)
