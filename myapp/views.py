@@ -27,5 +27,6 @@ def server_error(request):
 def user_error(request):
     return render(request, '500.html', status=500)
 
-def admin_error(request):
+def device_error(request):
     return render(request, '500.html', status=500)
+    
