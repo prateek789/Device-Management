@@ -45,3 +45,7 @@ def admin3_error(request):
 def admin4_error(request):
     return render(request, '500.html', status=500)
 
+
+def admin5_error(request):
+    return render(request, '500.html', status=500)
+
