@@ -55,4 +55,7 @@ def admin7_error(request):
     return render(request, '500.html', status=500)  
 
 def admin8_error(request):
-    return render(request, '500.html', status=500)    
+    return render(request, '500.html', status=500)   
+
+def admin9_error(request):
+    return render(request, '500.html', status=500)   
