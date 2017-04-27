@@ -59,3 +59,4 @@ def admin8_error(request):
 
 def admin9_error(request):
     return render(request, '500.html', status=500)   
+
